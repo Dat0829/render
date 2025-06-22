@@ -19,6 +19,8 @@
 
     socket.onmessage = (event) => {
       document.getElementById("output").innerHTML += `<p>Server: ${event.data}</p>`;
+      const msg = event.data;
+      window.external.Notify(msg);
     };
 
     function sendMessage() {
