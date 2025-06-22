@@ -1,15 +1,16 @@
-const express = require('express');
-const path = require('path');
+// server.js trên Render
+const WebSocket = require('ws');
+const server = new WebSocket.Server({ port: process.env.PORT || 8080 });
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+server.on('connection', ws => {
+    console.log('Client connected');
 
-app.use(express.static(path.join(__dirname, 'public')));
+    ws.on('message', msg => {
+        console.log('Received data from client:', msg);
+        // Xử lý hoặc lưu data tùy ý
+    });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'weather.html'));
-});
-
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
 });
