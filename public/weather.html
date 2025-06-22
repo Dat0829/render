@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Weather</title>
+  <script>
+    async function getWeather() {
+      const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=21.03&longitude=105.85&current=temperature_2m");
+      const data = await res.json();
+      document.getElementById("result").innerText = "Nhiệt độ: " + data.current.temperature_2m + " °C";
+      UnifiedRuntime.sendData(data.current.temperature_2m.toString());
+    }
+    window.onload = getWeather;
+  </script>
+</head>
+<body>
+  <h2>Thời tiết Hà Nội</h2>
+  <div id="result">Đang tải...</div>
+</body>
+</html>
