@@ -7,9 +7,18 @@
     async function getWeather() {
       const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=21.03&longitude=105.85&current=temperature_2m");
       const data = await res.json();
-      document.getElementById("result").innerText = "Nhiệt độ: " + data.current.temperature_2m + " °C";
-      UnifiedRuntime.sendData(data.current.temperature_2m.toString());
+      const temp = data.current.temperature_2m;
+
+      document.getElementById("result").innerText = "Nhiệt độ: " + temp + " °C";
+
+      // ✅ Chỉ gọi khi đang chạy trong WinCC Unified
+      if (typeof UnifiedRuntime !== "undefined") {
+        UnifiedRuntime.sendData(temp.toString());
+      } else {
+        console.log("[DEBUG] Không phải môi trường Unified → bỏ qua sendData()");
+      }
     }
+
     window.onload = getWeather;
   </script>
 </head>
